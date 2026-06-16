@@ -201,7 +201,7 @@ get_plot_labels <- function(var, values) {
 
 
 
-# 적용 환율
+# 적용 환율 (고정값 - 원래 실시간 API 연동이었으나 배포용으로 고정)
 displayExRate <- list(
     SEKUSD = 0.10,
     USDKRW = 1350
@@ -277,8 +277,8 @@ kiloInput <- selectInput(inputId = "Kilometers",
 zoneInput <- selectInput(inputId = "Zone",
                           label = span("Driving Region",
                                        tooltip(bs_icon("info-circle"),
-                                               HTML("화면 이해를 돕기 위한 지역 표시명입니다.<br>
-                                                    실제 한국 지역별 자동차보험료를 의미하지 않습니다."))),
+                                               HTML("Region labels are for display purposes only.<br>
+     This does not represent actual Swedish regional insurance rates."))),
                           choices = zone_choices,
                           selected = 1)
 
@@ -307,8 +307,8 @@ sensitivityInput <- toolbar_input_select(id = "sensitivity_var",
 carInput <- selectInput(inputId = "Make",
                           label = span("Vehicle Type",
                                        tooltip(bs_icon("info-circle"),
-                                               HTML("화면 이해를 돕기 위한 표시명입니다.<br>
-                                                    실제 차종별 보험료 또는 손해율을 의미하지 않습니다."))),
+                                               HTML("Vehicle type labels are for display purposes only.<br>
+     This does not represent actual insurance rates or loss ratios by vehicle type."))),
                           choices = make_choices,
                           selected = 1)
 
@@ -455,10 +455,13 @@ ui <- page_navbar(
                   ),
                   
                   card(
-                      card_header("Data & Interpretation Note"),
-                      p("This simulator demonstrates a model-based auto insurance pricing workflow using public motor insurance data."),
-                      p("Vehicle and region labels are generalized display labels for usability."),
-                      p("Premiums and KRW values are model-based reference outputs and should not be interpreted as real-world insurance quotes.")
+                      card(
+                          card_header("Data & Interpretation Note"),
+                          p("This simulator demonstrates a model-based auto insurance pricing workflow."),
+                          p("The underlying data is the ", em("motorins"), " dataset from the R package ", em("GLMsData"), " (Dunn & Smyth), based on Swedish motor insurance records."),
+                          p("Vehicle type and region labels are generalized for display purposes and do not correspond to actual Swedish categories."),
+                          p("Premiums and KRW reference values are ", strong("model outputs only"), " and should not be interpreted as real-world insurance quotes.")
+                      )
                   )
               )
               
